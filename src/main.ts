@@ -96,9 +96,21 @@ messageTextArea.addEventListener("keydown", (e) => {
 
 // OnLoad
 window.addEventListener('load',async ()=>{
-  userResponseParagraph.classList.add("hidden");
-  responseParagraph.style.fontWeight = "500";
-  responseParagraph.textContent = "Ollama -> Nothing here yet...";
-  await fetchModels();
-  selectedModel = seletModel.value;
+  // First check if the server is running
+  const url = new URL("http://localhost:11434/");
+  try {
+    const response = await fetch(url);
+    if (response.status !== 200) {
+      responseParagraph.textContent = "Ollama -> Server is not running";
+    } else {
+      userResponseParagraph.classList.add("hidden");
+      responseParagraph.style.fontWeight = "500";
+      responseParagraph.textContent = "Ollama -> Nothing here yet...";
+      await fetchModels();
+      selectedModel = seletModel.value;
+    }
+  } catch (error: any) {
+    responseParagraph.textContent = "Ollama -> Server is not running";
+  }
+
 });
