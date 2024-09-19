@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/style.css">
+    <title>Ollama Chat</title>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <nav>
+          <h1>Ollama Chat</h1>
+          <select name="selectModel" id="selectModel">
+            
+          </select>
+        </nav>
+      </header>
+      <div class="chat">
+        <div>
+          <p id="userResponseParagraph"></p>
+          <p id="respondeParagraph"></p>
+        </div>
+      </div>
+      <form method="post">
+        <div>
+          <textarea name="messageTextArea" id="messageTextArea" placeholder="Write a message here..." rows="1"></textarea>
+          <button type="submit" id="submitButton">
+            <img src="./src/assets/sendIcon.svg" alt="Send Icon">
+          </button>
+        </div>
+      </form>
+    </d>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
