@@ -1,5 +1,4 @@
 const $ = (el: string) => document.querySelector(el);
-const $$ = (el: string) => document.querySelectorAll(el);
 
 const form = $("form") as HTMLFormElement;
 const messageTextArea = $("#messageTextArea") as HTMLTextAreaElement;
