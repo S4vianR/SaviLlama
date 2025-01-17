@@ -4,7 +4,9 @@ const form = $("form") as HTMLFormElement;
 const messageTextArea = $("#messageTextArea") as HTMLTextAreaElement;
 // const submitButton = $("#submitButton") as HTMLButtonElement;
 const responseParagraph = $("#respondeParagraph") as HTMLParagraphElement;
-const userResponseParagraph = $("#userResponseParagraph") as HTMLParagraphElement;
+const userResponseParagraph = $(
+  "#userResponseParagraph"
+) as HTMLParagraphElement;
 const seletModel = $("#selectModel") as HTMLSelectElement;
 
 // Variable to store the selected model
@@ -13,38 +15,64 @@ let selectedModel: string;
 // Function to send a message to the ollama server
 const sendMessage = async (message: string, selectedModel: string) => {
   userResponseParagraph.classList.remove("hidden");
-  userResponseParagraph.textContent = "You ->" + message;
+  userResponseParagraph.textContent = "You -> " + message;
 
-  responseParagraph.style.fontWeight = "400";
-  responseParagraph.textContent = "Ollama -> Loading...";
-
-  const url = "http://localhost:11434/api/chat";
+  const url = "http://raspidyn.ddns.net:11434/api/chat";
   const data = JSON.stringify({
     model: selectedModel,
-    messages: [{ role: "user", content: message }],
-    stream: false,
+    messages: [
+      {
+        role: "user",
+        content: message,
+      },
+    ],
   });
   const options = { method: "POST", body: data };
 
   try {
+    responseParagraph.style.fontWeight = "400";
+    responseParagraph.textContent = "Ollama -> Loading...";
+
     const response = await fetch(url, options);
-    const jsonResponse = await response.json();
+    const reader = response.body?.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let resultString = "";
 
-    // console.log("API Response:", jsonResponse); // Add this line to log the response
+    if (reader) {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-    if (jsonResponse.message && jsonResponse.message.content) {
-      responseParagraph.textContent = "Ollama -> " + jsonResponse.message.content;
-    } else {
-      responseParagraph.textContent = "Ollama -> No response";
+        // Decode the chunk and split it into lines
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split("\n").filter(line => line.trim() !== "");
+
+        // Process each line
+        lines.forEach(line => {
+          try {
+            const jsonResponse = JSON.parse(line);
+            if (jsonResponse.message && jsonResponse.message.content) {
+              // Clean up the content to remove unwanted spaces
+              const cleanedContent = jsonResponse.message.content.replace(/\s+/g, ' ').trim();
+              resultString += cleanedContent + " ";
+            }
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+          }
+        });
+
+        // Update the response paragraph with the accumulated messages
+        responseParagraph.textContent = "Ollama -> " + resultString;
+      }
     }
   } catch (error: any) {
-    responseParagraph.textContent = "Ollama -> Error", error.message;
+    responseParagraph.textContent = "Ollama -> Error: " + error.message;
   }
 };
 
 const fetchModels = async () => {
-  // Fetch the models from the server -> http://localhost:11434/api/tags
-  const url = "http://localhost:11434/api/tags";
+  // Fetch the models from the server -> http://raspidyn.ddns.net:11434/api/tags
+  const url = "http://raspidyn.ddns.net:11434/api/tags";
   const response = await fetch(url);
   const jsonResponse = await response.json();
 
@@ -56,7 +84,7 @@ const fetchModels = async () => {
     option.selected = model.name === "llama3.1:latest";
     seletModel.appendChild(option);
   });
-}
+};
 
 // Event listener for form submit
 form?.addEventListener("submit", async (e) => {
@@ -94,9 +122,9 @@ messageTextArea.addEventListener("keydown", (e) => {
 });
 
 // OnLoad
-window.addEventListener('load',async ()=>{
+window.addEventListener("load", async () => {
   // First check if the server is running
-  const url = new URL("http://localhost:11434/");
+  const url = new URL("http://raspidyn.ddns.net:11434/");
   try {
     const response = await fetch(url);
     if (response.status !== 200) {
@@ -111,5 +139,4 @@ window.addEventListener('load',async ()=>{
   } catch (error: any) {
     responseParagraph.textContent = "Ollama -> Server is not running";
   }
-
 });
