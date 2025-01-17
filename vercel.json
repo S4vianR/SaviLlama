@@ -1,0 +1,5 @@
+{
+    "rewrites": [
+      { "source": "/api/(.*)", "destination": "http://raspidyn.ddns.net:11434/api/$1" }
+    ]
+  }
