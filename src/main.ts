@@ -25,7 +25,7 @@ const sendMessage = async (message: string, selectedModel: string) => {
     userResponseParagraph.textContent = "";
   }
 
-  const url = "/api/chat";
+  const url = "http://raspidyn.ddns.net:11434/api/chat";
   const data = JSON.stringify({
     model: selectedModel,
     messages: [
@@ -83,7 +83,7 @@ const sendMessage = async (message: string, selectedModel: string) => {
 
 const fetchModels = async () => {
   // Fetch the models from the server -> http://raspidyn.ddns.net:11434/api/tags
-  const url = "/api/tags";
+  const url = "http://raspidyn.ddns.net:11434/api/tags";
   const response = await fetch(url);
   const jsonResponse = await response.json();
 
@@ -114,7 +114,7 @@ seletModel?.addEventListener("change", async (e) => {
   await sendMessage("", selectedModel);
   
   if (lastSelectedModel) {
-    const url = "/api/chat";
+    const url = "http://raspidyn.ddns.net:11434/api/chat";
     const data = JSON.stringify({
       model: lastSelectedModel,
       messages: [],

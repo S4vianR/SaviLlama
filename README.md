@@ -1,5 +1,16 @@
 # Ollama-chat
 
-For this first version you would need to have ollama on your local machine.
+For version 2.0.1 you would need to:
 
+- Copy the repo
+- Run:
+
+```bash
+npm install
+npm run dev
+```
+
+- And that's it!!
+
+ ![Ollama Logo](https://www.linuxtricks.fr/upload/ollama-logo.png "Ollama")
 Link to [Ollama's](https://ollama.com/) website for more information.
