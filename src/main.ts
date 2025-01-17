@@ -153,7 +153,7 @@ messageTextArea.addEventListener("keydown", (e) => {
 // OnLoad
 window.addEventListener("load", async () => {
   // First check if the server is running
-  const url = new URL("/api");
+  const url = new URL("http://raspidyn.ddns.net:11434/");
   try {
     const response = await fetch(url);
     if (response.status !== 200) {
