@@ -12,5 +12,6 @@ npm run dev
 
 - And that's it!!
 
- ![Ollama Logo](https://www.linuxtricks.fr/upload/ollama-logo.png "Ollama")
+![Ollama Logo](https://www.linuxtricks.fr/upload/ollama-logo.png "Ollama")
+
 Link to [Ollama's](https://ollama.com/) website for more information.
