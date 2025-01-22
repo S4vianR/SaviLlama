@@ -25,7 +25,7 @@ const sendMessage = async (message: string, selectedModel: string) => {
     userResponseParagraph.textContent = "";
   }
 
-  const url = "http://raspidyn.ddns.net:11434/api/chat";
+  const url = "https://ollama.savi-net.duckdns.org/api/chat"; // Cambiado a /api/chat
   const data = JSON.stringify({
     model: selectedModel,
     messages: [
@@ -82,8 +82,8 @@ const sendMessage = async (message: string, selectedModel: string) => {
 };
 
 const fetchModels = async () => {
-  // Fetch the models from the server -> http://raspidyn.ddns.net:11434/api/tags
-  const url = "http://raspidyn.ddns.net:11434/api/tags";
+  // Fetch the models from the server -> https://ollama.savi-net.duckdns.org/api/tags
+  const url = "https://ollama.savi-net.duckdns.org/api/tags";
   const response = await fetch(url);
   const jsonResponse = await response.json();
 
@@ -114,7 +114,7 @@ seletModel?.addEventListener("change", async (e) => {
   await sendMessage("", selectedModel);
   
   if (lastSelectedModel) {
-    const url = "http://raspidyn.ddns.net:11434/api/chat";
+    const url = "https://ollama.savi-net.duckdns.org/api/chat"; // Cambiado a /api/chat
     const data = JSON.stringify({
       model: lastSelectedModel,
       messages: [],
@@ -153,7 +153,7 @@ messageTextArea.addEventListener("keydown", (e) => {
 // OnLoad
 window.addEventListener("load", async () => {
   // First check if the server is running
-  const url = new URL("http://raspidyn.ddns.net:11434/");
+  const url = new URL("https://ollama.savi-net.duckdns.org/");
   try {
     const response = await fetch(url);
     if (response.status !== 200) {

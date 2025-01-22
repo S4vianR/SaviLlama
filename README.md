@@ -1,6 +1,6 @@
 # Ollama-chat
 
-For version 2.0.1 you would need to:
+For version 2.1.1 you would need to:
 
 - Copy the repo
 - Run:
